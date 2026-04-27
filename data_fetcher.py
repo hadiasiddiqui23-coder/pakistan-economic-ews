@@ -37,17 +37,19 @@ def get_historical_inflation():
     except:
         return ["2020", "2021", "2022", "2023", "2024"], [10, 12, 25, 30, 15]
 
-# --- FIX: This function was accidentally indented inside the one above! ---
 def get_historical_data(indicator_code):
-    """Fetches 10 years of data for any World Bank indicator code."""
-    url = f"https://api.worldbank.org/v2/country/PAK/indicator/{indicator_code}?format=json&per_page=10"
+    """Fetches 10 years of data and filters out empty values."""
+    url = f"https://api.worldbank.org/v2/country/PAK/indicator/{indicator_code}?format=json&per_page=15"
     try:
         response = requests.get(url)
         data = response.json()
         
-        # Grab years and values, replacing None with 0 so the graph doesn't break
-        years = [item['date'] for item in data[1]][::-1]
-        values = [item['value'] if item['value'] is not None else 0 for item in data[1]][::-1]
+        # Filter: Only keep entries where 'value' is NOT None
+        valid_data = [item for item in data[1] if item['value'] is not None]
+        
+        # Take the last 8-10 valid points and reverse them
+        years = [item['date'] for item in valid_data[:10]][::-1]
+        values = [round(item['value'], 2) for item in valid_data[:10]][::-1]
         
         return years, values
     except:
