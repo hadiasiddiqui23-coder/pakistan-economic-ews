@@ -51,8 +51,25 @@ if st.button("🚀 Assess Stability Risk", use_container_width=True):
 
 # 5. The Graph Section
 st.markdown("---")
-st.subheader("📈 10-Year Historical Inflation Trend")
-if st.checkbox("Show Historical Chart"):
-    years, values = data_fetcher.get_historical_inflation()
-    chart_data = pd.DataFrame(values, index=years, columns=["Inflation %"])
-    st.line_chart(chart_data)
+st.subheader("📈 Historical Economic Trends (Last 10 Years)")
+
+# Create 3 tabs
+tab1, tab2, tab3 = st.tabs(["Inflation", "GDP Growth", "Interest Rates"])
+
+with tab1:
+    st.write("### Annual Inflation Rate")
+    # Code for Inflation: FP.CPI.TOTL.ZG
+    years, values = data_fetcher.get_historical_data("FP.CPI.TOTL.ZG")
+    st.line_chart(pd.DataFrame(values, index=years, columns=["Inflation %"]))
+
+with tab2:
+    st.write("### Annual GDP Growth")
+    # Code for GDP Growth: NY.GDP.MKTP.KD.ZG
+    years, values = data_fetcher.get_historical_data("NY.GDP.MKTP.KD.ZG")
+    st.area_chart(pd.DataFrame(values, index=years, columns=["GDP Growth %"]))
+
+with tab3:
+    st.write("### Real Interest Rate")
+    # Code for Real Interest Rate: FR.INR.RINR
+    years, values = data_fetcher.get_historical_data("FR.INR.RINR")
+    st.bar_chart(pd.DataFrame(values, index=years, columns=["Interest Rate %"]))

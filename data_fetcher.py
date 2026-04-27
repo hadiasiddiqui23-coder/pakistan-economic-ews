@@ -36,3 +36,19 @@ def get_historical_inflation():
         return years, values
     except:
         return ["2020", "2021", "2022", "2023", "2024"], [10, 12, 25, 30, 15]
+    
+    def get_historical_data(indicator_code):
+        """Fetches 10 years of data for any World Bank indicator code."""
+    # The URL now uses the 'indicator_code' we pass to it
+    url = f"https://api.worldbank.org/v2/country/PK/indicator/{indicator_code}?format=json&per_page=10"
+    try:
+        response = requests.get(url)
+        data = response.json()
+        
+        # We reverse the data so it goes from oldest year to newest year
+        years = [item['date'] for item in data[1]][::-1]
+        values = [item['value'] if item['value'] is not None else 0 for item in data[1]][::-1]
+        
+        return years, values
+    except:
+        return [], []
