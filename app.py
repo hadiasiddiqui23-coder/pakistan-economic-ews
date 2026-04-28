@@ -61,15 +61,18 @@ with tab1:
     # Code for Inflation: FP.CPI.TOTL.ZG
     years, values = data_fetcher.get_historical_data("FP.CPI.TOTL.ZG")
     st.line_chart(pd.DataFrame(values, index=years, columns=["Inflation %"]))
+    st.info("**Interpretation:** Higher peaks indicate periods of high prices, signaling a need for tighter monetary policy.")
 
 with tab2:
     st.write("### Annual GDP Growth")
     # Code for GDP Growth: NY.GDP.MKTP.KD.ZG
     years, values = data_fetcher.get_historical_data("NY.GDP.MKTP.KD.ZG")
     st.area_chart(pd.DataFrame(values, index=years, columns=["GDP Growth %"]))
+    st.info("**Interpretation:** Upward trends show economic expansion, while drops suggest a slowing economy or recession.")
 
 with tab3:
     st.write("### Real Interest Rate")
     # Code for Real Interest Rate: FR.INR.RINR
     years, values = data_fetcher.get_historical_data("FR.INR.RINR")
     st.bar_chart(pd.DataFrame(values, index=years, columns=["Interest Rate %"]))
+    st.info("**Interpretation:** High real interest rates help control inflation but can make borrowing expensive for businesses.")
